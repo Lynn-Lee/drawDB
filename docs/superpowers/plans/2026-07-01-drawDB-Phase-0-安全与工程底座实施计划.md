@@ -116,6 +116,8 @@ npm run coverage -- src/test/utils/diagramFixture.test.js
 
 ### 0.3 Playwright 与浏览器 smoke 基线
 
+状态：已完成，建立 `npm run e2e`、`playwright.config.js` 和 Chromium smoke。红灯记录为缺少 `playwright` 命令，补齐依赖和配置后首次运行因浏览器二进制缺失失败；执行 `npx playwright install chromium` 后，修正测试断言并通过 3 个 smoke 用例。
+
 目标：建立 landing、editor、templates 基础浏览器 smoke，后续 UX 和 accessibility 任务可复用。
 
 修改文件：
@@ -150,6 +152,14 @@ npm run build
 - smoke 至少覆盖 `/` 和 `/editor`。
 - 测试中不依赖外部网络服务。
 - 如果浏览器二进制缺失，记录安装命令和 blocker，不伪造通过。
+
+本轮验证：
+
+```bash
+npm run e2e
+```
+
+结果：通过，Chromium 项目 3 个用例覆盖 `/`、`/templates` 和 `/editor`。运行时保留既有 React Router future flag、Semi UI defaultProps 和 `autofocus` console warning；这些不阻断 Phase 0.3，后续 UX/accessibility 任务再治理。
 
 ### 0.4 settingsRepository 与损坏配置恢复
 

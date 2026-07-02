@@ -52,6 +52,7 @@ test.describe("app smoke", () => {
   });
 
   test("editor route renders without requiring an account", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto("/editor");
 
     await expect(page).toHaveTitle(/Editor \| drawDB/);
@@ -60,6 +61,27 @@ test.describe("app smoke", () => {
     ).toBeVisible();
     await page.getByRole("button", { name: "Create blank diagram" }).click();
     await expect(page.getByText("File").first()).toBeVisible();
+    await expect(page.getByText("Small screen editor mode")).toBeHidden();
+  });
+
+  test("editor shows a mobile experience hint on small screens", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/editor");
+    await page.getByRole("button", { name: "Create blank diagram" }).click();
+
+    await expect(page.getByText("Small screen editor mode")).toBeVisible();
+    await expect(
+      page.getByText("For full canvas editing, use a tablet or desktop."),
+    ).toBeVisible();
+
+    const layout = await page.evaluate(() => ({
+      documentWidth: document.documentElement.scrollWidth,
+      viewportWidth: window.innerWidth,
+    }));
+
+    expect(layout.documentWidth).toBeLessThanOrEqual(layout.viewportWidth);
   });
 
   test("editor toolbar icon buttons have names and modal close restores focus", async ({

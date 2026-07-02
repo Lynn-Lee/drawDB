@@ -596,6 +596,25 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
           toolbarContainer={toolbarContainer}
         />
       </IdContext.Provider>
+      {!showNewDiagramWizard && (
+        <div
+          role="status"
+          className="hidden md:block z-30 border-b border-amber-200 bg-amber-50 px-4 py-3 text-amber-950 shadow-sm"
+        >
+          <div className="flex items-start gap-3">
+            <IconAlertTriangle className="mt-0.5 shrink-0 text-amber-500" />
+            <div className="min-w-0 space-y-1">
+              <div className="text-sm font-semibold">
+                Small screen editor mode
+              </div>
+              <p className="text-xs leading-5">
+                For full canvas editing, use a tablet or desktop. Import,
+                export, save, and open remain available from the top menu.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
       <div
         className="flex h-full overflow-y-auto"
         onPointerUp={(e) => e.isPrimary && setResize(false)}

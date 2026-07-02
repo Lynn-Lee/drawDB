@@ -132,7 +132,7 @@ Phase 3 的目标是在 Phase 0 安全底座、Phase 1 domain/persistence、Phas
 
 ### 3.4 菜单配置与快捷键入口抽离
 
-状态：未开始。
+状态：已完成。
 
 目标：把 `ControlPanel.jsx` 中的菜单结构和快捷键定义抽成可测试配置，为 accessibility 和后续重构减小入口复杂度。
 
@@ -145,10 +145,12 @@ Phase 3 的目标是在 Phase 0 安全底座、Phase 1 domain/persistence、Phas
 
 步骤：
 
-- [ ] 写红灯测试，覆盖菜单项可见名称、禁用条件和快捷键描述。
-- [ ] 抽出菜单配置和快捷键 hook，保持现有行为。
-- [ ] 输入框、Monaco、Lexical 焦点内避免误触全局快捷键。
-- [ ] 运行聚焦测试、`npm run test`、`npm run e2e`、`npm run lint`、`npm run build`。
+- [x] 写红灯测试，覆盖菜单项可见名称、禁用条件和快捷键描述。
+- [x] 抽出菜单配置和快捷键 hook，保持现有行为。
+- [x] 输入框、Monaco、Lexical 焦点内避免误触全局快捷键。
+- [x] 运行聚焦测试、`npm run test`、`npm run e2e`、`npm run lint`、`npm run build`。
+
+验证记录：`npm run test -- src/editor/menuConfig.test.js src/editor/useEditorHotkeys.test.jsx`、`npm run test`、`npm run e2e`、`npm run lint`、`npm run build`、`git diff --check`、`npm audit --audit-level=high` 已通过；浏览器桌面和 390px 移动 smoke 已确认 editor 可打开且无横向溢出。`npm run e2e` 已改用 drawDB 专用默认端口，避免误复用其他项目的 dev server。
 
 完成标准：
 
@@ -281,4 +283,4 @@ npm run accessibility
 
 ## 6. 下一轮默认任务
 
-下一轮自动化默认执行 Phase 3.4 菜单配置与快捷键入口抽离。
+下一轮自动化默认执行 Phase 3.5 Icon button 可访问名称与焦点恢复。

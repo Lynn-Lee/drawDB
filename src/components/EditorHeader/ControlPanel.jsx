@@ -1,5 +1,9 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { Slot, useExtensions } from "../../context/ExtensionsContext";
+import {
+  getCloudCapability,
+  Slot,
+  useExtensions,
+} from "../../context/ExtensionsContext";
 import { createPortal } from "react-dom";
 import {
   IconCaretdown,
@@ -91,6 +95,7 @@ import {
 } from "../../editor/menuConfig";
 import { useEditorHotkeys } from "../../editor/useEditorHotkeys";
 import CloudAccountEntry from "./CloudAccountEntry";
+import CloudUploadLocalDiagram from "../../features/cloud/CloudUploadLocalDiagram";
 
 export default function ControlPanel({
   title,
@@ -158,6 +163,21 @@ export default function ControlPanel({
   const isTemplate = useMatch("/editor/templates/:id");
   const navigate = useNavigateWithParams();
   const extensions = useExtensions();
+  const cloudCapability = getCloudCapability(extensions);
+  const currentDiagramForCloudUpload = {
+    diagramId: diagramId ?? "",
+    database,
+    name: title,
+    gistId: gistId ?? "",
+    tables,
+    relationships,
+    notes,
+    areas,
+    pan: transform.pan,
+    zoom: transform.zoom,
+    ...(databases[database].hasEnums && { enums }),
+    ...(databases[database].hasTypes && { types }),
+  };
 
   useEffect(() => {
     const openImportModal = () => {
@@ -1708,6 +1728,11 @@ export default function ControlPanel({
             <div className="flex items-center gap-2 me-7">
               <Slot name="header-actions-start" />
               <CloudAccountEntry />
+              <CloudUploadLocalDiagram
+                enabled={cloudCapability.enabled}
+                repository={extensions.cloudRepository}
+                diagram={currentDiagramForCloudUpload}
+              />
               {!isTemplate && (
                 <Button
                   type="primary"

@@ -284,6 +284,15 @@ const en = {
       "Any unsaved local changes stay in this browser.",
     cloud_action_sign_in: "Sign in",
     cloud_action_sign_out: "Sign out",
+    cloud_upload_local_diagram: "Upload to cloud",
+    cloud_upload_data_disclosure_title: "Upload diagram data",
+    cloud_upload_data_disclosure_description:
+      "Uploading sends the current diagram data to the configured cloud backend.",
+    cloud_upload_local_copy_preserved:
+      "The local copy remains in this browser if upload fails.",
+    cloud_upload_confirm: "Confirm upload",
+    cloud_upload_success: "Uploaded to cloud",
+    cloud_upload_failed: "Cloud upload failed",
     show_relationship_labels: "Show relationship labels",
     docs: "Docs",
     supported_types: "Supported file types:",

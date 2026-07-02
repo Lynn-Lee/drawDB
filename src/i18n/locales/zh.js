@@ -276,6 +276,15 @@ const zh = {
       "本地未保存的更改仍保留在当前浏览器中。",
     cloud_action_sign_in: "登录",
     cloud_action_sign_out: "退出登录",
+    cloud_upload_local_diagram: "上传到云端",
+    cloud_upload_data_disclosure_title: "上传图表数据",
+    cloud_upload_data_disclosure_description:
+      "上传会把当前图表数据发送到已配置的云端后端。",
+    cloud_upload_local_copy_preserved:
+      "如果上传失败，本浏览器中的本地副本仍会保留。",
+    cloud_upload_confirm: "确认上传",
+    cloud_upload_success: "已上传到云端",
+    cloud_upload_failed: "云端上传失败",
     supported_types: "支持的文件类型：",
     bulk_update: "批量更新",
     multiselect: "多选",

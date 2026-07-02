@@ -141,7 +141,7 @@ Phase 5 的目标是在不破坏“无需账号、本地优先”核心体验的
 
 ### 5.5 上传当前本地图到云端
 
-状态：未开始。
+状态：已完成（2026-07-02）。
 
 目标：用户显式触发后，把当前 normalized diagram 上传到云端，并保留本地副本。
 
@@ -153,15 +153,15 @@ Phase 5 的目标是在不破坏“无需账号、本地优先”核心体验的
 
 步骤：
 
-- [ ] 写红灯测试，覆盖上传前需要用户动作、上传使用 normalized diagram、失败不清空本地保存状态。
-- [ ] 实现上传 helper，返回 cloud diagram id、modified timestamp 和权限。
-- [ ] UI 必须说明会把图表数据发送到配置后端。
-- [ ] 运行聚焦测试、`npm run test`、`npm run e2e`、`npm run lint`、`npm run build`。
+- [x] 写红灯测试，覆盖上传前需要用户动作、上传使用 normalized diagram、失败不清空本地保存状态。（Phase 5.5 已完成，红灯先确认为缺失 `uploadLocalDiagram` helper 和 `CloudUploadLocalDiagram` 组件。）
+- [x] 实现上传 helper，返回 cloud diagram id、modified timestamp 和权限。（Phase 5.5 已完成，`uploadLocalDiagram` normalize 后调用 `saveCloudDiagram`，并标准化成功/失败结果。）
+- [x] UI 必须说明会把图表数据发送到配置后端。（Phase 5.5 已完成，Header 上传按钮先打开确认弹窗，确认文案说明图表数据会发送到配置云端后端，失败提示本地副本仍保留。）
+- [x] 运行聚焦测试、`npm run test`、`npm run e2e`、`npm run lint`、`npm run build`。（Phase 5.5 已完成并记录到 run log。）
 
 完成标准：
 
-- 本地图表不会自动上传。
-- 上传失败不丢本地数据，成功后显示云端保存来源。
+- 本地图表不会自动上传。（Phase 5.5 已完成。）
+- 上传失败不丢本地数据，成功后显示云端保存来源。（Phase 5.5 已完成，成功后 Header 显示上传成功状态，失败时保留本地副本提示。）
 
 ### 5.6 云端加载与本地模式不阻塞
 
@@ -268,4 +268,4 @@ npm run bundle:check
 
 ## 6. 下一轮默认任务
 
-下一轮自动化默认执行 Phase 5.5 上传当前本地图到云端。
+下一轮自动化默认执行 Phase 5.6 云端加载与本地模式不阻塞。

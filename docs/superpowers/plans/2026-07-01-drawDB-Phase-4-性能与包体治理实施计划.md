@@ -171,7 +171,7 @@ Phase 4 的目标是在 Phase 0 安全底座、Phase 1 domain/persistence、Phas
 
 ### 4.6 大图 performance fixtures
 
-状态：未开始。
+状态：已完成。
 
 目标：新增 100、500、1000 表 diagram fixtures，为后续大图加载、搜索和导出 smoke 提供稳定输入。
 
@@ -183,15 +183,16 @@ Phase 4 的目标是在 Phase 0 安全底座、Phase 1 domain/persistence、Phas
 
 步骤：
 
-- [ ] 写红灯测试，覆盖性能 fixture 的表数量、关系数量和 schema shape。
-- [ ] 生成或维护 deterministic fixtures，避免提交随机数据。
-- [ ] 记录 fixture 使用方式和边界。
-- [ ] 运行聚焦测试、`npm run test`、`git diff --check`。
+- [x] 写红灯测试，覆盖性能 fixture 的表数量、关系数量和 schema shape。（Phase 4.6 已完成，`src/test/fixtures/performance/performanceDiagrams.test.js` 先确认 fixture generator 缺失后红灯。）
+- [x] 生成或维护 deterministic fixtures，避免提交随机数据。（Phase 4.6 已完成，`createPerformanceDiagram(size)` 固定生成 100、500、1000 表 normalized diagrams。）
+- [x] 记录 fixture 使用方式和边界。（Phase 4.6 已完成，`src/test/fixtures/performance/README.md` 记录入口、shape 和维护要求。）
+- [x] 运行聚焦测试、`npm run test`、`git diff --check`。（Phase 4.6 已完成并记录到 run log。）
 
 完成标准：
 
 - 100/500/1000 表 fixtures 可被测试和 e2e 复用。
 - fixtures 不依赖外部服务或当前浏览器状态。
+- 当前 fixture 每张表包含 4 个字段，关系数固定为 `tables - 1`，坐标按 20 列网格 deterministic 生成。
 
 ### 4.7 Canvas/Table 稳定 props 与 memo 基线
 
@@ -291,4 +292,4 @@ npm audit --audit-level=high
 
 ## 6. 下一轮默认任务
 
-下一轮自动化默认执行 Phase 4.6 大图 performance fixtures。
+下一轮自动化默认执行 Phase 4.7 Canvas/Table 稳定 props 与 memo 基线。

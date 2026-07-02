@@ -238,7 +238,7 @@ Phase 3 的目标是在 Phase 0 安全底座、Phase 1 domain/persistence、Phas
 
 ### 3.8 Editor 移动端体验提示
 
-状态：未开始。
+状态：已完成。
 
 目标：移动端进入 Editor 时提供清晰提示或预览优先路径，避免用户误以为完整画布体验已为小屏优化。
 
@@ -249,15 +249,17 @@ Phase 3 的目标是在 Phase 0 安全底座、Phase 1 domain/persistence、Phas
 
 步骤：
 
-- [ ] 写红灯测试，覆盖移动端 editor 显示体验提示，桌面端不显示。
-- [ ] 实现移动端提示或预览优先布局，不阻断本地打开。
-- [ ] 确认导入/导出/保存关键入口仍可访问或有清晰降级说明。
-- [ ] 运行 `npm run test`、`npm run e2e`、`npm run lint`、`npm run build`。
+- [x] 写红灯测试，覆盖移动端 editor 显示体验提示，桌面端不显示。
+- [x] 实现移动端提示或预览优先布局，不阻断本地打开。
+- [x] 确认导入/导出/保存关键入口仍可访问或有清晰降级说明。
+- [x] 运行 `npm run test`、`npm run e2e`、`npm run lint`、`npm run build`。
 
 完成标准：
 
 - 小屏用户看到明确状态和下一步。
 - 桌面 editor 体验不回退。
+
+验证记录：红灯 `npm run e2e -- --grep "editor shows a mobile experience hint"` 首次失败于缺少 `Small screen editor mode` 提示；实现后聚焦 e2e 覆盖 390px 小屏显示提示、1280px 桌面不显示提示，并确认移动端页面宽度不超过 viewport。合并门禁已运行并通过：`npm run test`、`npm run e2e`、`npm run accessibility`、`npm run lint`、`npm run build`、`git diff --check` 和 `npm audit --audit-level=high`。
 
 ## 5. Phase 3 退出门禁
 
@@ -289,4 +291,4 @@ npm run accessibility
 
 ## 6. 下一轮默认任务
 
-下一轮自动化默认执行 Phase 3.8 Editor 移动端体验提示。
+下一轮自动化默认执行 Phase 3 退出门禁复核；通过后生成 Phase 4 性能与包体治理实施计划。

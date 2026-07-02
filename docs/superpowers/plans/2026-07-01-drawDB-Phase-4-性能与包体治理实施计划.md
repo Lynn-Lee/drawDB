@@ -196,7 +196,7 @@ Phase 4 的目标是在 Phase 0 安全底座、Phase 1 domain/persistence、Phas
 
 ### 4.7 Canvas/Table 稳定 props 与 memo 基线
 
-状态：未开始。
+状态：已完成。
 
 目标：先对 table、relationship、note、area 等高频渲染组件做低风险 memo 和稳定 props 治理，减少无关状态变更导致的重渲染。
 
@@ -209,15 +209,15 @@ Phase 4 的目标是在 Phase 0 安全底座、Phase 1 domain/persistence、Phas
 
 步骤：
 
-- [ ] 写红灯或 instrumentation 测试，覆盖无关状态变化不导致关键 table 重渲染次数异常增长。
-- [ ] 提取稳定回调和 props，使用 `React.memo` 或现有局部模式。
-- [ ] 不改变拖拽、缩放、选择、撤销重做语义。
-- [ ] 运行聚焦测试、`npm run test`、`npm run e2e`、`npm run build`。
+- [x] 写红灯或 instrumentation 测试，覆盖无关状态变化不导致关键 table 重渲染次数异常增长。（Phase 4.7 已完成，`CanvasRenderLayer.test.jsx` 先因缺少 render layer 红灯。）
+- [x] 提取稳定回调和 props，使用 `React.memo` 或现有局部模式。（Phase 4.7 已完成，新增 `CanvasRenderLayer.jsx`，并把 Canvas 的 pressed element 暂存改为 `ref`。）
+- [x] 不改变拖拽、缩放、选择、撤销重做语义。（Phase 4.7 已通过全量 e2e 和测试门禁验证。）
+- [x] 运行聚焦测试、`npm run test`、`npm run e2e`、`npm run build`。（Phase 4.7 已完成并记录到 run log。）
 
 完成标准：
 
-- 主要画布交互无回归。
-- 渲染优化有可解释的测试或 smoke 证据。
+- 主要画布交互无回归。（Phase 4.7 已通过 Playwright e2e。）
+- 渲染优化有可解释的测试或 smoke 证据。（Phase 4.7 已用 render count instrumentation 覆盖父层无关状态变化不重绘稳定 canvas 节点。）
 
 ### 4.8 拖拽期间 pointer movement state 隔离
 
@@ -292,4 +292,4 @@ npm audit --audit-level=high
 
 ## 6. 下一轮默认任务
 
-下一轮自动化默认执行 Phase 4.7 Canvas/Table 稳定 props 与 memo 基线。
+下一轮自动化默认执行 Phase 4.8 拖拽期间 pointer movement state 隔离。

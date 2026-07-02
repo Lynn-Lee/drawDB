@@ -11,6 +11,7 @@
     "coverage": "vitest run --coverage",
     "e2e": "playwright test",
     "accessibility": "playwright test src/test/e2e/accessibility.spec.js",
+    "bundle:check": "node scripts/check-bundle-budget.mjs",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

@@ -46,7 +46,7 @@ Phase 4 的目标是在 Phase 0 安全底座、Phase 1 domain/persistence、Phas
 
 ### 4.1 Bundle budget 脚本与构建基线记录
 
-状态：未开始。
+状态：已完成。
 
 目标：新增可重复执行的 bundle budget 检查脚本，记录当前 build chunk baseline，并把主 chunk 过大治理纳入后续切片。
 
@@ -59,11 +59,11 @@ Phase 4 的目标是在 Phase 0 安全底座、Phase 1 domain/persistence、Phas
 
 步骤：
 
-- [ ] 写红灯测试或脚本 smoke，覆盖缺少 `dist` 或主 chunk 超出预算时返回非 0。
-- [ ] 新增 `npm run bundle:check`，读取 `dist/assets` 的 JS/CSS 文件大小并输出最大 chunk 摘要。
-- [ ] 先按当前 build 结果设置宽松 Phase 4 baseline，后续切片逐步收紧。
-- [ ] 在验证矩阵记录当前 chunk size、已知 `lottie-web` direct eval 和主 chunk 过大警告。
-- [ ] 运行 `npm run build`、`npm run bundle:check`、`npm run lint`、`npm run test`、`git diff --check`、`npm audit --audit-level=high`。
+- [x] 写红灯测试或脚本 smoke，覆盖缺少 `dist` 或主 chunk 超出预算时返回非 0。（Phase 4.1 已完成，`src/build/bundleBudget.test.js` 覆盖缺 build、超预算和预算内输出。）
+- [x] 新增 `npm run bundle:check`，读取 `dist/assets` 的 JS/CSS 文件大小并输出最大 chunk 摘要。（Phase 4.1 已完成。）
+- [x] 先按当前 build 结果设置宽松 Phase 4 baseline，后续切片逐步收紧。（Phase 4.1 已完成，当前预算为 JS <= 17000 KB、CSS <= 450 KB、total <= 18000 KB。）
+- [x] 在验证矩阵记录当前 chunk size、已知 `lottie-web` direct eval 和主 chunk 过大警告。（Phase 4.1 已完成，当前最大 JS chunk 16271.88 KB，最大 CSS 404.78 KB，JS/CSS 总量 17044.63 KB。）
+- [x] 运行 `npm run build`、`npm run bundle:check`、`npm run lint`、`npm run test`、`git diff --check`、`npm audit --audit-level=high`。（Phase 4.1 已完成并记录到 run log。）
 
 完成标准：
 
@@ -288,4 +288,4 @@ npm audit --audit-level=high
 
 ## 6. 下一轮默认任务
 
-下一轮自动化默认执行 Phase 4.1 Bundle budget 脚本与构建基线记录。
+下一轮自动化默认执行 Phase 4.2 Monaco 按需加载。

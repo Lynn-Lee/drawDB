@@ -45,7 +45,6 @@ import {
   noteWidth,
   pngExportPixelRatio,
 } from "../../data/constants";
-import { useHotkeys } from "react-hotkeys-hook";
 import { Validator } from "jsonschema";
 import { areaSchema, noteSchema, tableSchema } from "../../data/schemas";
 import { db } from "../../data/db";
@@ -87,6 +86,11 @@ import { deleteFromCache, STORAGE_KEY } from "../../utils/cache";
 import { useLiveQuery } from "dexie-react-hooks";
 import { DateTime } from "luxon";
 import ConfigureCustomTypes from "./ConfigureCustomTypes";
+import {
+  EDITOR_MENU_CATEGORIES,
+  getEditorMenuShortcut,
+} from "../../editor/menuConfig";
+import { useEditorHotkeys } from "../../editor/useEditorHotkeys";
 
 export default function ControlPanel({
   title,
@@ -915,6 +919,7 @@ export default function ControlPanel({
   const open = () => setModal(MODAL.OPEN);
   const saveDiagramAs = () => setModal(MODAL.SAVEAS);
   const fullscreen = useFullscreen();
+  const menuShortcut = getEditorMenuShortcut;
 
   useEffect(() => {
     if (!fullscreen)
@@ -931,7 +936,7 @@ export default function ControlPanel({
       },
       open: {
         function: open,
-        shortcut: "Ctrl+O",
+        shortcut: menuShortcut("file", "open"),
       },
       open_recent: {
         children: [
@@ -964,12 +969,12 @@ export default function ControlPanel({
       },
       save: {
         function: save,
-        shortcut: "Ctrl+S",
+        shortcut: menuShortcut("file", "save"),
         disabled: layout.readOnly,
       },
       save_as: {
         function: saveDiagramAs,
-        shortcut: "Ctrl+Shift+S",
+        shortcut: menuShortcut("file", "save_as"),
         disabled: layout.readOnly,
       },
       save_as_template: {
@@ -1346,12 +1351,12 @@ export default function ControlPanel({
     edit: {
       undo: {
         function: undo,
-        shortcut: "Ctrl+Z",
+        shortcut: menuShortcut("edit", "undo"),
         disabled: layout.readOnly || undoStack.length === 0,
       },
       redo: {
         function: redo,
-        shortcut: "Ctrl+Y",
+        shortcut: menuShortcut("edit", "redo"),
         disabled: layout.readOnly || redoStack.length === 0,
       },
       clear: {
@@ -1373,36 +1378,36 @@ export default function ControlPanel({
       },
       edit: {
         function: edit,
-        shortcut: "Ctrl+E",
+        shortcut: menuShortcut("edit", "edit"),
         disabled: layout.readOnly,
       },
       cut: {
         function: cut,
-        shortcut: "Ctrl+X",
+        shortcut: menuShortcut("edit", "cut"),
         disabled: layout.readOnly,
       },
       copy: {
         function: copy,
-        shortcut: "Ctrl+C",
+        shortcut: menuShortcut("edit", "copy"),
       },
       paste: {
         function: paste,
-        shortcut: "Ctrl+V",
+        shortcut: menuShortcut("edit", "paste"),
         disabled: layout.readOnly,
       },
       duplicate: {
         function: duplicate,
-        shortcut: "Ctrl+D",
+        shortcut: menuShortcut("edit", "duplicate"),
         disabled: layout.readOnly,
       },
       delete: {
         function: del,
-        shortcut: "Del",
+        shortcut: menuShortcut("edit", "delete"),
         disabled: layout.readOnly,
       },
       copy_as_image: {
         function: copyAsImage,
-        shortcut: "Ctrl+Alt+C",
+        shortcut: menuShortcut("edit", "copy_as_image"),
       },
     },
     view: {
@@ -1440,7 +1445,7 @@ export default function ControlPanel({
           <i className="bi bi-toggle-off" />
         ),
         function: toggleDBMLEditor,
-        shortcut: "Alt+E",
+        shortcut: menuShortcut("view", "dbml_view"),
       },
       strict_mode: {
         state: settings.strictMode ? (
@@ -1449,7 +1454,7 @@ export default function ControlPanel({
           <i className="bi bi-toggle-on" />
         ),
         function: viewStrictMode,
-        shortcut: "Ctrl+Shift+M",
+        shortcut: menuShortcut("view", "strict_mode"),
       },
       presentation_mode: {
         function: () => {
@@ -1469,11 +1474,11 @@ export default function ControlPanel({
           <i className="bi bi-toggle-off" />
         ),
         function: viewFieldSummary,
-        shortcut: "Ctrl+Shift+F",
+        shortcut: menuShortcut("view", "field_details"),
       },
       reset_view: {
         function: resetView,
-        shortcut: "Enter/Return",
+        shortcut: menuShortcut("view", "reset_view"),
       },
       show_comments: {
         state: settings.showComments ? (
@@ -1506,7 +1511,7 @@ export default function ControlPanel({
           <i className="bi bi-toggle-off" />
         ),
         function: viewGrid,
-        shortcut: "Ctrl+Shift+G",
+        shortcut: menuShortcut("view", "show_grid"),
       },
       snap_to_grid: {
         state: settings.snapToGrid ? (
@@ -1567,11 +1572,11 @@ export default function ControlPanel({
       },
       zoom_in: {
         function: zoomIn,
-        shortcut: "Ctrl+(Up/Wheel)",
+        shortcut: menuShortcut("view", "zoom_in"),
       },
       zoom_out: {
         function: zoomOut,
-        shortcut: "Ctrl+(Down/Wheel)",
+        shortcut: menuShortcut("view", "zoom_out"),
       },
       fullscreen: {
         state: fullscreen ? (
@@ -1637,7 +1642,7 @@ export default function ControlPanel({
     help: {
       docs: {
         function: () => window.open(`${socials.docs}`, "_blank"),
-        shortcut: "Ctrl+H",
+        shortcut: menuShortcut("help", "docs"),
       },
       shortcuts: {
         function: () => window.open(`${socials.docs}/shortcuts`, "_blank"),
@@ -1651,36 +1656,30 @@ export default function ControlPanel({
     },
   };
 
-  useHotkeys("mod+i", fileImport, { preventDefault: true });
-  useHotkeys("mod+z", undo, { preventDefault: true });
-  useHotkeys("mod+y", redo, { preventDefault: true });
-  useHotkeys("mod+s", save, { preventDefault: true });
-  useHotkeys("mod+o", open, { preventDefault: true });
-  useHotkeys("mod+e", edit, { preventDefault: true });
-  useHotkeys("mod+d", duplicate, { preventDefault: true });
-  useHotkeys("mod+c", copy, { preventDefault: true });
-  useHotkeys("mod+v", paste, { preventDefault: true });
-  useHotkeys("mod+x", cut, { preventDefault: true });
-  useHotkeys("delete", del, { preventDefault: true });
-  useHotkeys("mod+shift+g", viewGrid, { preventDefault: true });
-  useHotkeys("mod+up", zoomIn, { preventDefault: true });
-  useHotkeys("mod+down", zoomOut, { preventDefault: true });
-  useHotkeys("mod+shift+m", viewStrictMode, {
-    preventDefault: true,
+  useEditorHotkeys({
+    fileImport,
+    undo,
+    redo,
+    save,
+    open,
+    edit,
+    duplicate,
+    copy,
+    paste,
+    cut,
+    del,
+    viewGrid,
+    zoomIn,
+    zoomOut,
+    viewStrictMode,
+    viewFieldSummary,
+    saveDiagramAs,
+    copyAsImage,
+    resetView,
+    openDocs: () => window.open(socials.docs, "_blank"),
+    fitWindow,
+    toggleDBMLEditor,
   });
-  useHotkeys("mod+shift+f", viewFieldSummary, {
-    preventDefault: true,
-  });
-  useHotkeys("mod+shift+s", saveDiagramAs, {
-    preventDefault: true,
-  });
-  useHotkeys("mod+alt+c", copyAsImage, { preventDefault: true });
-  useHotkeys("enter", resetView, { preventDefault: true });
-  useHotkeys("mod+h", () => window.open(socials.docs, "_blank"), {
-    preventDefault: true,
-  });
-  useHotkeys("mod+alt+w", fitWindow, { preventDefault: true });
-  useHotkeys("alt+e", toggleDBMLEditor, { preventDefault: true });
 
   return (
     <>
@@ -1981,7 +1980,7 @@ export default function ControlPanel({
             </div>
             <div className="flex items-center">
               <div className="flex justify-start text-md select-none me-2">
-                {Object.keys(menu).map((category) => (
+                {EDITOR_MENU_CATEGORIES.map(({ id: category }) => (
                   <Dropdown
                     key={category}
                     position="bottomLeft"

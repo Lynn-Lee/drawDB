@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Slot } from "../../context/ExtensionsContext";
 import {
   Action,
@@ -11,10 +11,12 @@ import {
   minAreaSize,
 } from "../../data/constants";
 import { Toast } from "@douyinfe/semi-ui";
-import Table from "./Table";
-import Area from "./Area";
-import Relationship from "./Relationship";
-import Note from "./Note";
+import {
+  CanvasAreaLayer,
+  CanvasNoteLayer,
+  CanvasRelationshipLayer,
+  CanvasTableLayer,
+} from "./CanvasRenderLayer";
 import {
   useCanvas,
   useSettings,
@@ -129,9 +131,8 @@ export default function Canvas() {
     ctrlKey: false,
     metaKey: false,
   });
-  // this is used to store the element that is clicked on
-  // at the moment, and shouldn't be a part of the state
-  let elementPointerDown = null;
+  // Store the element pressed in this pointer cycle without causing rerenders.
+  const elementPointerDown = useRef(null);
 
   const isSameElement = (el1, el2) => {
     return el1.id === el2.id && el1.type === el2.type;
@@ -445,6 +446,8 @@ export default function Canvas() {
    */
   const handlePointerDown = (e) => {
     if (!e.isPrimary) return;
+    const pressedElement = elementPointerDown.current;
+    elementPointerDown.current = null;
 
     // don't pan if the sidesheet for editing a table is open
     if (
@@ -464,12 +467,12 @@ export default function Canvas() {
         y1: pointer.spaces.diagram.y,
         x2: pointer.spaces.diagram.x,
         y2: pointer.spaces.diagram.y,
-        show: elementPointerDown === null || !elementPointerDown.element.locked,
+        show: pressedElement === null || !pressedElement.element.locked,
         ctrlKey: e.ctrlKey,
         metaKey: e.metaKey,
       });
-      if (elementPointerDown !== null) {
-        handlePointerDownOnElement(e, elementPointerDown);
+      if (pressedElement !== null) {
+        handlePointerDownOnElement(e, pressedElement);
       }
       pointer.setStyle("crosshair");
     } else if (isMouseMiddleButton || isMouseRightButton) {
@@ -600,11 +603,19 @@ export default function Canvas() {
     });
   };
 
-  const handleGripField = () => {
+  const handleGripField = useCallback(() => {
     setPanning((old) => ({ ...old, isPanning: false }));
-    setDragging(notDragging);
+    setDragging({
+      id: -1,
+      type: ObjectType.NONE,
+      grabOffset: { x: 0, y: 0 },
+    });
     setLinking(true);
-  };
+  }, []);
+
+  const handleElementPointerDown = useCallback((element, type) => {
+    elementPointerDown.current = { element, type };
+  }, []);
 
   const getCardinality = (startField, endField) => {
     const startIsUnique = startField.unique || startField.primary;
@@ -774,35 +785,25 @@ export default function Canvas() {
             </>
           )}
           {areas.map((a) => (
-            <Area
+            <CanvasAreaLayer
               key={a.id}
-              data={a}
-              setResize={setAreaResize}
-              setInitDimensions={setAreaInitDimensions}
-              onPointerDown={() => {
-                elementPointerDown = {
-                  element: a,
-                  type: ObjectType.AREA,
-                };
-              }}
+              area={a}
+              setAreaResize={setAreaResize}
+              setAreaInitDimensions={setAreaInitDimensions}
+              onElementPointerDown={handleElementPointerDown}
             />
           ))}
           {relationships.map((e) => (
-            <Relationship key={e.id} data={e} />
+            <CanvasRelationshipLayer key={e.id} relationship={e} />
           ))}
           {tables.map((table) => (
-            <Table
+            <CanvasTableLayer
               key={table.id}
-              tableData={table}
+              table={table}
               setHoveredTable={setHoveredTable}
               handleGripField={handleGripField}
               setLinkingLine={setLinkingLine}
-              onPointerDown={() => {
-                elementPointerDown = {
-                  element: table,
-                  type: ObjectType.TABLE,
-                };
-              }}
+              onElementPointerDown={handleElementPointerDown}
             />
           ))}
           {linking && (
@@ -815,15 +816,10 @@ export default function Canvas() {
           )}
           <Slot name="svg-overlay" />
           {notes.map((n) => (
-            <Note
+            <CanvasNoteLayer
               key={n.id}
-              data={n}
-              onPointerDown={() => {
-                elementPointerDown = {
-                  element: n,
-                  type: ObjectType.NOTE,
-                };
-              }}
+              note={n}
+              onElementPointerDown={handleElementPointerDown}
             />
           ))}
           {bulkSelectRect.show && (

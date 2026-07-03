@@ -35,7 +35,7 @@ function formatModifiedAt(value) {
 }
 
 function getDiagramName(diagram) {
-  return diagram.name || diagram.title || "cloud_diagrams_untitled";
+  return diagram.name || diagram.title || null;
 }
 
 function getTableCount(diagram) {
@@ -128,8 +128,8 @@ export default function CloudDiagrams({
   }, [repository]);
 
   useEffect(() => {
-    document.title = "Cloud diagrams | drawDB";
-  }, []);
+    document.title = t("cloud_diagrams_document_title");
+  }, [t]);
 
   const filteredDiagrams = useMemo(
     () => filterDiagrams(state.diagrams, filter),
@@ -228,19 +228,23 @@ export default function CloudDiagrams({
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
                         <h3 className="font-semibold text-slate-900">
-                          {getDiagramName(diagram)}
+                          {getDiagramName(diagram) || t("cloud_diagrams_untitled")}
                         </h3>
                         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-600">
                           <span>
                             {diagram.database || t("cloud_diagrams_database_unknown")}
                           </span>
-                          <span>{getTableCount(diagram)} tables</span>
-                          <span>{formatModifiedAt(diagram.modifiedAt)}</span>
+                          <span>
+                            {t("cloud_diagrams_table_count", {
+                              count: getTableCount(diagram),
+                            })}
+                          </span>
+                          <span>{t(formatModifiedAt(diagram.modifiedAt))}</span>
                         </div>
                       </div>
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="rounded-md border border-slate-200 bg-slate-100 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-slate-700">
-                          {diagram.permission || "viewer"}
+                          {diagram.permission || t("cloud_diagrams_viewer")}
                         </span>
                         <Link
                           className="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"

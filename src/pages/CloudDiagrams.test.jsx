@@ -10,7 +10,13 @@ vi.mock("react-i18next", () => ({
     init: vi.fn(),
   },
   useTranslation: () => ({
-    t: (key) => key,
+    t: (key, options) => {
+      if (key === "cloud_diagrams_table_count") {
+        return `${options.count} tables`;
+      }
+
+      return key;
+    },
   }),
 }));
 

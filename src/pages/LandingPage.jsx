@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import SimpleCanvas from "../components/SimpleCanvas";
 import Navbar from "../components/Navbar";
 import { diagram } from "../data/heroDiagram";
@@ -26,7 +27,9 @@ function shortenNumber(number) {
 }
 
 export default function LandingPage() {
+  const { t } = useTranslation();
   const [stats, setStats] = useState({ stars: 18000, forks: 1200 });
+  const features = getFeatures(t);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -36,11 +39,10 @@ export default function LandingPage() {
     };
 
     document.body.setAttribute("theme-mode", "light");
-    document.title =
-      "drawDB | Online database diagram editor and SQL generator";
+    document.title = t("landing_document_title");
 
     fetchStats();
-  }, []);
+  }, [t]);
 
   return (
     <div>
@@ -61,19 +63,18 @@ export default function LandingPage() {
             <FadeIn duration={0.75}>
               <div className="md:px-3">
                 <h1 className="text-[42px] md:text-3xl font-bold tracking-wide bg-linear-to-r from-sky-900 from-10% via-slate-500 to-[#12495e] inline-block text-transparent bg-clip-text">
-                  Draw, Copy, and Paste
+                  {t("landing_hero_title")}
                 </h1>
                 <div className="text-lg font-medium mt-1 sliding-vertical">
-                  Free and open source, simple, and intuitive database design
-                  editor, data-modeler, and SQL generator.{" "}
+                  {t("landing_hero_description")}{" "}
                   <span className="ms-2 sm:block sm:ms-0 text-slate-500 bg-white font-bold whitespace-nowrap">
-                    No sign up
+                    {t("landing_hero_no_signup")}
                   </span>
                   <span className="ms-2 sm:block sm:ms-0 text-slate-500 bg-white font-bold whitespace-nowrap">
-                    Free of charge
+                    {t("landing_hero_free")}
                   </span>
                   <span className="ms-2 sm:block sm:ms-0 text-slate-500 bg-white font-bold whitespace-nowrap">
-                    Quick and easy
+                    {t("landing_hero_quick")}
                   </span>
                 </div>
               </div>
@@ -87,13 +88,13 @@ export default function LandingPage() {
                     .scrollIntoView({ behavior: "smooth" })
                 }
               >
-                Learn more
+                {t("landing_learn_more")}
               </button>
               <Link
                 to="/editor"
                 className="inline-block py-3 text-white transition-all duration-300 rounded-full shadow-lg bg-sky-900 ps-7 pe-6 hover:bg-sky-800"
               >
-                Try it for yourself <i className="bi bi-arrow-right ms-1"></i>
+                {t("landing_try_it")} <i className="bi bi-arrow-right ms-1"></i>
               </Link>
             </div>
           </div>
@@ -106,7 +107,7 @@ export default function LandingPage() {
           {/* Supported by */}
           <div className="text-center mb-16">
             <div className="text-2xl md:text-xl font-bold text-sky-800 mb-8">
-              Supported by
+              {t("landing_supported_by")}
             </div>
             <div>
               <a
@@ -121,19 +122,18 @@ export default function LandingPage() {
                   className="m-auto mb-4"
                 />
                 <div className="font-semibold text-lg md:text-base">
-                  Next-gen AI-powered intelligent terminal for all platforms
+                  {t("landing_warp_description")}
                 </div>
               </a>
             </div>
           </div>
           <div className="mt-16 w-[75%] text-center sm:w-full mx-auto shadow-xs rounded-2xl border p-6 bg-white space-y-3 mb-12">
             <div className="text-lg font-medium">
-              Build diagrams with a few clicks, see the full picture, export SQL
-              scripts, customize your editor, and more.
+              {t("landing_product_summary")}
             </div>
             <img
               src={screenshot}
-              alt="drawDB editor showing a database diagram"
+              alt={t("landing_screenshot_alt")}
               className="mx-auto"
             />
           </div>
@@ -143,7 +143,7 @@ export default function LandingPage() {
                 {shortenNumber(stats.stars)}
               </div>
               <div className="ms-1 mt-1 font-medium tracking-wide">
-                GitHub stars
+                {t("landing_github_stars")}
               </div>
             </div>
             <div className="text-center mb-4">
@@ -151,7 +151,7 @@ export default function LandingPage() {
                 {shortenNumber(stats.forks)}
               </div>
               <div className="ms-1 mt-1 font-medium tracking-wide">
-                GitHub forks
+                {t("landing_github_forks")}
               </div>
             </div>
             <div className="text-center mb-4">
@@ -159,12 +159,12 @@ export default function LandingPage() {
                 {shortenNumber(languages.length)}
               </div>
               <div className="ms-1 mt-1 font-medium tracking-wide">
-                Languages
+                {t("landing_languages")}
               </div>
             </div>
           </div>
           <div className="text-lg font-medium text-center mt-12 mb-6">
-            Design for your database
+            {t("landing_design_for_database")}
           </div>
           <div className="grid grid-cols-3 place-items-center sm:grid-cols-1 sm:gap-10">
             {dbs.map((s, i) => (
@@ -196,10 +196,10 @@ export default function LandingPage() {
       <div id="features" className="py-8 px-36 md:px-8">
         <FadeIn duration={1}>
           <div className="text-base font-medium text-center text-sky-900">
-            More than just an editor
+            {t("landing_features_eyebrow")}
           </div>
           <div className="text-2xl mt-1 font-medium text-center">
-            What drawDB has to offer
+            {t("landing_features_title")}
           </div>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] gap-8 mt-10">
             {features.map((f, i) => (
@@ -222,9 +222,9 @@ export default function LandingPage() {
       {/* Tweets */}
       <div className="px-40 mt-6 md:px-8">
         <div className="text-center text-2xl md:text-xl font-medium">
-          What the internet says about us
+          {t("landing_social_title")}
         </div>
-        <LandingTweets />
+        <LandingTweets t={t} />
       </div>
 
       {/* Contact us */}
@@ -242,11 +242,10 @@ export default function LandingPage() {
       </svg>
       <div className="bg-zinc-100 py-8 px-32 md:px-8">
         <div className="mt-4 mb-2 text-2xl font-bold text-center">
-          Reach out to us
+          {t("landing_contact_title")}
         </div>
         <div className="text-lg text-center mb-4">
-          We love hearing from you. Join our community on Discord, GitHub, and
-          X.
+          {t("landing_contact_description")}
         </div>
         <div className="px-36 text-center md:px-8">
           <div className="md:block md:space-y-3 flex gap-3 justify-center">
@@ -259,7 +258,7 @@ export default function LandingPage() {
               <div className="bg-zinc-800 hover:opacity-90 transition-all duration-300 flex items-center gap-4 px-14 py-4 rounded-lg">
                 <img src={github} alt="" className="h-8" />
                 <div className="text-lg text-white font-bold">
-                  See the source
+                  {t("landing_source")}
                 </div>
               </div>
             </a>
@@ -272,7 +271,7 @@ export default function LandingPage() {
               <div className="bg-[#5865f2] hover:opacity-90 transition-all duration-300 flex items-center gap-4 px-8 py-4 rounded-lg">
                 <img src={discord} alt="" className="h-8" />
                 <div className="text-lg text-white font-bold">
-                  Join us on Discord
+                  {t("landing_join_discord")}
                 </div>
               </div>
             </a>
@@ -284,7 +283,7 @@ export default function LandingPage() {
             >
               <div className="text-white bg-zinc-800 hover:opacity-90 transition-all duration-300 flex items-center gap-4 px-12 py-4 rounded-lg">
                 <i className="text-2xl bi bi-twitter-x" />
-                <div className="text-lg  font-bold">Follow us on X</div>
+                <div className="text-lg  font-bold">{t("landing_follow_x")}</div>
               </div>
             </a>
           </div>
@@ -300,7 +299,7 @@ export default function LandingPage() {
                   <i className="fa-solid fa-heart text-rose-300" />
                   <i className="absolute top-0.5 left-0 fa-regular fa-heart text-rose-400" />
                 </div>
-                <div className="text-xl font-semibold">Support us</div>
+                <div className="text-xl font-semibold">{t("landing_support_us")}</div>
               </div>
             </a>
           </div>
@@ -308,13 +307,12 @@ export default function LandingPage() {
       </div>
 
       <div className="bg-red-700 py-1 text-center text-white text-xs font-semibold px-3">
-        Attention! The diagrams are saved in your browser. Before clearing the
-        browser make sure to back up your data.
+        {t("landing_browser_storage_warning")}
       </div>
       <hr className="border-zinc-300" />
       <div className="text-center text-sm py-3">
         &copy; {new Date().getFullYear()} <strong>drawDB</strong> - All rights
-        reserved.
+        {t("landing_rights_reserved")}
       </div>
     </div>
   );
@@ -327,7 +325,7 @@ const tweetIds = [
   "1776842268042756248",
 ];
 
-function LandingTweets() {
+function LandingTweets({ t }) {
   const containerRef = useRef(null);
   const [shouldLoadTweets, setShouldLoadTweets] = useState(false);
   const [TweetComponent, setTweetComponent] = useState(null);
@@ -386,8 +384,8 @@ function LandingTweets() {
           className="col-span-2 md:col-span-1 w-full rounded-xl border border-zinc-200 bg-white p-8 text-center text-sm font-medium text-zinc-500"
         >
           {tweetLoadError
-            ? "Community posts could not be loaded."
-            : "Loading community posts when this section is visible."}
+            ? t("landing_social_load_error")
+            : t("landing_social_loading")}
         </div>
       ) : (
         tweetIds.map((id) => (
@@ -409,57 +407,54 @@ const dbs = [
   { name: "Oracle SQL", icon: oraclesql_icon, height: 172 },
 ];
 
-const features = [
+function getFeatures(t) {
+  return [
   {
-    title: "Export",
+    title: t("landing_feature_export_title"),
     content: (
       <div>
-        Export the DDL script to run on your database or export the diagram as a
-        JSON or an image.
+        {t("landing_feature_export_body")}
       </div>
     ),
     footer: "",
   },
   {
-    title: "Reverse engineer",
+    title: t("landing_feature_reverse_title"),
     content: (
       <div>
-        Already have a schema? Import a DDL script to generate a diagram.
+        {t("landing_feature_reverse_body")}
       </div>
     ),
     footer: "",
   },
   {
-    title: "Generate migrations",
+    title: t("landing_feature_migrations_title"),
     content: (
       <div>
-        Version your diagram and generate migration scripts to update your
-        database
+        {t("landing_feature_migrations_body")}
       </div>
     ),
     footer: "",
   },
   {
-    title: "Customizable workspace",
+    title: t("landing_feature_workspace_title"),
     content: (
       <div>
-        Customize the UI to fit your preferences. Select the components you want
-        in your view.
+        {t("landing_feature_workspace_body")}
       </div>
     ),
     footer: "",
   },
   {
-    title: "Keyboard shortcuts",
+    title: t("landing_feature_shortcuts_title"),
     content: (
       <div>
-        Speed up development with keyboard shortcuts. See all available
-        shortcuts
+        {t("landing_feature_shortcuts_body")}{" "}
         <Link
           to={`${socials.docs}/shortcuts`}
           className="ms-1.5 text-blue-500 hover:underline"
         >
-          here
+          {t("landing_feature_shortcuts_link")}
         </Link>
         .
       </div>
@@ -467,73 +462,67 @@ const features = [
     footer: "",
   },
   {
-    title: "Templates",
+    title: t("landing_feature_templates_title"),
     content: (
       <div>
-        Start off with pre-built templates. Get a quick start or get inspiration
-        for your design.
+        {t("landing_feature_templates_body")}
       </div>
     ),
     footer: "",
   },
   {
-    title: "Custom Templates",
+    title: t("landing_feature_custom_templates_title"),
     content: (
       <div>
-        Have boilerplate structures? Save time by saving them as templates and
-        load them when needed.
+        {t("landing_feature_custom_templates_body")}
       </div>
     ),
     footer: "",
   },
   {
-    title: "Robust editor",
+    title: t("landing_feature_editor_title"),
     content: (
       <div>
-        Undo, redo, copy, paste, duplicate and more. Add tables, subject areas,
-        and notes.
+        {t("landing_feature_editor_body")}
       </div>
     ),
     footer: "",
   },
   {
-    title: "Issue detection",
+    title: t("landing_feature_issues_title"),
     content: (
       <div>
-        Detect and tackle errors in the diagram to make sure the scripts are
-        correct.
+        {t("landing_feature_issues_body")}
       </div>
     ),
     footer: "",
   },
   {
-    title: "Relational databases",
+    title: t("landing_feature_relational_title"),
     content: (
       <div>
-        We support 5 relational databases - MySQL, PostgreSQL, SQLite, MariaDB,
-        SQL Server.
+        {t("landing_feature_relational_body")}
       </div>
     ),
     footer: "",
   },
   {
-    title: "Object-Relational databases",
+    title: t("landing_feature_object_relational_title"),
     content: (
       <div>
-        Add custom types for object-relational databases, or create custom JSON
-        schemes.
+        {t("landing_feature_object_relational_body")}
       </div>
     ),
     footer: "",
   },
   {
-    title: "Presentation mode",
+    title: t("landing_feature_presentation_title"),
     content: (
       <div>
-        Present your diagrams on a big screen during team meetings and
-        discussions.
+        {t("landing_feature_presentation_body")}
       </div>
     ),
     footer: "",
   },
-];
+  ];
+}

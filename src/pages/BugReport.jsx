@@ -10,11 +10,12 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { $generateHtmlFromNodes } from "@lexical/html";
 import { CLEAR_EDITOR_COMMAND } from "lexical";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { socials } from "../data/socials";
 import { send } from "../api/email";
 import { useThemedPage } from "../hooks";
 
-function Form({ theme }) {
+function Form({ theme, t }) {
   const [editor] = useLexicalComposerContext();
   const [data, setData] = useState({
     title: "",
@@ -70,26 +71,26 @@ function Form({ theme }) {
           if (result?.ok === false) {
             throw new Error(result.message);
           }
-          Toast.success("Bug reported!");
+          Toast.success(t("bug_report_success"));
           editor.dispatchCommand(CLEAR_EDITOR_COMMAND, null);
           resetForm();
         } catch {
-          Toast.error("Oops! Something went wrong.");
+          Toast.error(t("oops_smth_went_wrong"));
           setLoading(false);
         }
       };
       sendMail();
     });
-  }, [editor, data]);
+  }, [editor, data, t]);
 
   return (
     <div className="p-5 mt-6 card-theme rounded-md">
       <Input
-        placeholder="Title"
+        placeholder={t("title")}
         value={data.title}
         onChange={(v) => setData((prev) => ({ ...prev, title: v }))}
       />
-      <RichEditor theme={theme} placeholder="Describe the bug" />
+      <RichEditor theme={theme} placeholder={t("bug_report_describe_bug")} />
       <Upload
         action="#"
         ref={uploadRef}
@@ -103,8 +104,8 @@ function Form({ theme }) {
           };
         }}
         draggable={true}
-        dragMainText="Click to upload the file or drag and drop the file here"
-        dragSubText="Upload up to 3 images"
+        dragMainText={t("bug_report_upload_main")}
+        dragSubText={t("bug_report_upload_sub")}
         accept="image/*"
         limit={3}
       />
@@ -115,7 +116,7 @@ function Form({ theme }) {
             style={{ padding: "16px 24px" }}
             disabled={loading || data.title === "" || !data.title}
           >
-            Submit
+            {t("bug_report_submit")}
           </Button>
           <div className={loading ? "ms-2" : "hidden"}>
             <Spin />
@@ -127,12 +128,13 @@ function Form({ theme }) {
 }
 
 export default function BugReport() {
+  const { t } = useTranslation();
   const theme = localStorage.getItem("theme") || "light";
 
   useEffect(() => {
-    document.title = "Report a bug | drawDB";
+    document.title = t("bug_report_document_title");
     document.body.setAttribute("class", "theme");
-  }, []);
+  }, [t]);
 
   useThemedPage();
 
@@ -148,7 +150,7 @@ export default function BugReport() {
             />
           </Link>
           <div className="ms-4 sm:text-sm xl:text-lg font-semibold">
-            Report a bug
+            {t("report_bug")}
           </div>
         </div>
       </div>
@@ -162,38 +164,40 @@ export default function BugReport() {
           <div className="card-theme p-6 rounded-md">
             <div className="flex items-center">
               <IconPaperclip />
-              <div className="font-bold ms-1">Describe the bug </div>
+              <div className="font-bold ms-1">{t("bug_report_describe_bug")}</div>
             </div>
             <div className="text-sm mt-1">
-              Please provide a clear and concise description of what the bug is.
+              {t("bug_report_describe_bug_hint")}
             </div>
             <div className="flex items-center mt-3">
               <IconPaperclip />
-              <div className="font-bold ms-1">Steps to reproduce the bug </div>
+              <div className="font-bold ms-1">
+                {t("bug_report_reproduce_steps")}
+              </div>
             </div>
             <div className="text-sm mt-1">
-              Please provide the steps of how to reproduce the bug.
+              {t("bug_report_reproduce_steps_hint")}
             </div>
             <div className="flex items-center mt-3">
               <IconPaperclip />
-              <div className="font-bold ms-1">Expected behaviour</div>
+              <div className="font-bold ms-1">{t("bug_report_expected")}</div>
             </div>
             <div className="text-sm mt-1">
-              Tell us what you expected to see vs what you saw.
+              {t("bug_report_expected_hint")}
             </div>
             <div className="flex items-center mt-3">
               <IconPaperclip />
-              <div className="font-bold ms-1">Your browser and device</div>
+              <div className="font-bold ms-1">{t("bug_report_browser_device")}</div>
             </div>
             <div className="text-sm mt-1">
-              What web browser and device did you encounter the bug on.
+              {t("bug_report_browser_device_hint")}
             </div>
             <div className="flex items-center mt-3">
               <IconPaperclip />
-              <div className="font-bold ms-1">Screenshots</div>
+              <div className="font-bold ms-1">{t("bug_report_screenshots")}</div>
             </div>
             <div className="text-sm mt-1">
-              Add any relevant images if possible.
+              {t("bug_report_screenshots_hint")}
             </div>
             <div className="flex items-center justify-center my-2">
               <hr
@@ -201,7 +205,9 @@ export default function BugReport() {
                   theme === "dark" ? "border-zinc-700" : "border-zinc-300"
                 } grow`}
               />
-              <div className="text-sm font-semibold m-2">Alternatively</div>
+              <div className="text-sm font-semibold m-2">
+                {t("bug_report_alternatively")}
+              </div>
               <hr
                 className={`${
                   theme === "dark" ? "border-zinc-700" : "border-zinc-300"
@@ -216,7 +222,7 @@ export default function BugReport() {
                 window.open(`${socials.github}/issues`, "_self");
               }}
             >
-              Add an issue
+              {t("bug_report_add_issue")}
             </Button>
           </div>
         </div>
@@ -228,15 +234,12 @@ export default function BugReport() {
             closeIcon={null}
             description={
               <div>
-                We value your feedback! If you&apos;ve encountered a bug or
-                issue while using our platform, please help us improve by
-                reporting it. Your input is invaluable in making our service
-                better.
+                {t("bug_report_banner")}
               </div>
             }
           />
           <LexicalComposer initialConfig={editorConfig}>
-            <Form theme={theme} />
+            <Form theme={theme} t={t} />
           </LexicalComposer>
         </div>
       </div>

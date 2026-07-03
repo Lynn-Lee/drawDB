@@ -1,26 +1,21 @@
 import Dexie from "dexie";
 import { templateSeeds } from "./seeds";
+import {
+  CURRENT_INDEXEDDB_VERSION,
+  backfillStableIds,
+  logSeedError,
+} from "./dbMigration";
 
 export const db = new Dexie("drawDB");
 
-db.version(67)
+// This independent refactor baseline starts at v67; no v1-v66 schema history exists in this repository.
+db.version(CURRENT_INDEXEDDB_VERSION)
   .stores({
     diagrams: "++id, lastModified, loadedFromGistId, diagramId",
     templates: "++id, custom, templateId",
   })
-  .upgrade(async (tx) => {
-    await tx.diagrams.toCollection().modify((diagram) => {
-      if (!diagram.diagramId) {
-        diagram.diagramId = crypto.randomUUID();
-      }
-    });
-    await tx.templates.toCollection().modify((template) => {
-      if (!template.templateId) {
-        template.templateId = crypto.randomUUID();
-      }
-    });
-  });
+  .upgrade(backfillStableIds);
 
 db.on("populate", (transaction) => {
-  transaction.templates.bulkAdd(templateSeeds).catch((e) => console.log(e));
+  transaction.templates.bulkAdd(templateSeeds).catch(logSeedError);
 });

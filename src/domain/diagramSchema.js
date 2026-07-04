@@ -7,9 +7,32 @@ const REQUIRED_ARRAY_FIELDS = [
   "types",
   "enums",
 ];
+const DANGEROUS_KEYS = new Set(["__proto__", "constructor", "prototype"]);
 
 const addError = (errors, path, message) => {
   errors.push({ path, message });
+};
+
+const collectDangerousKeyErrors = (value, errors, path = "", seen = new WeakSet()) => {
+  if (!value || typeof value !== "object") {
+    return;
+  }
+
+  if (seen.has(value)) {
+    return;
+  }
+  seen.add(value);
+
+  Object.keys(value).forEach((key) => {
+    const childPath = path ? `${path}.${key}` : key;
+
+    if (DANGEROUS_KEYS.has(key)) {
+      addError(errors, childPath, `${key} is not allowed.`);
+      return;
+    }
+
+    collectDangerousKeyErrors(value[key], errors, childPath, seen);
+  });
 };
 
 export function validateDiagramShape(diagram) {
@@ -19,6 +42,8 @@ export function validateDiagramShape(diagram) {
     addError(errors, "", "diagram must be an object.");
     return { valid: false, errors };
   }
+
+  collectDangerousKeyErrors(diagram, errors);
 
   if (typeof diagram.schemaVersion !== "number") {
     addError(errors, "schemaVersion", "schemaVersion must be a number.");

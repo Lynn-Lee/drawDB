@@ -41,4 +41,28 @@ describe("validateDiagramShape", () => {
       message: "tables must be an array.",
     });
   });
+
+  it("rejects dangerous prototype keys in diagram content", () => {
+    const diagram = {
+      ...createDiagram({ diagramId: "local-1", name: "Local diagram" }),
+      tables: [
+        JSON.parse(
+          '{"id":"users","name":"users","fields":[],"__proto__":{"polluted":true}}',
+        ),
+      ],
+      constructor: { prototype: { polluted: true } },
+    };
+
+    const result = validateDiagramShape(diagram);
+
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContainEqual({
+      path: "tables.0.__proto__",
+      message: "__proto__ is not allowed.",
+    });
+    expect(result.errors).toContainEqual({
+      path: "constructor",
+      message: "constructor is not allowed.",
+    });
+  });
 });

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   defaultSettings,
   readSettings,
+  SETTINGS_SCHEMA_VERSION,
   writeSettings,
 } from './settingsRepository';
 
@@ -59,6 +60,53 @@ describe('settingsRepository', () => {
         tableWidth: 320,
       },
       recovered: false,
+    });
+  });
+
+  it('sanitizes saved settings by known field and type', () => {
+    localStorage.setItem(
+      'settings',
+      JSON.stringify({
+        schemaVersion: SETTINGS_SCHEMA_VERSION,
+        mode: 'solarized',
+        strictMode: 'yes',
+        showGrid: false,
+        tableWidth: 'wide',
+        showComments: true,
+        unknownSetting: true,
+      }),
+    );
+
+    const result = readSettings(new URLSearchParams());
+
+    expect(result).toEqual({
+      settings: {
+        ...defaultSettings,
+        showGrid: false,
+        showComments: true,
+      },
+      recovered: false,
+    });
+    expect(result.settings).not.toHaveProperty('schemaVersion');
+    expect(result.settings).not.toHaveProperty('unknownSetting');
+  });
+
+  it('persists current schema version and sanitized settings only', () => {
+    writeSettings({
+      ...defaultSettings,
+      mode: 'dark',
+      tableWidth: 420,
+      strictMode: 'yes',
+      unknownSetting: true,
+    });
+
+    expect(JSON.parse(localStorage.getItem('settings'))).toEqual({
+      schemaVersion: SETTINGS_SCHEMA_VERSION,
+      settings: {
+        ...defaultSettings,
+        mode: 'dark',
+        tableWidth: 420,
+      },
     });
   });
 

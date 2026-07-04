@@ -2,6 +2,7 @@ import { tableWidth } from "../data/constants";
 import { queryConfig } from "../utils/queryConfig";
 
 const SETTINGS_STORAGE_KEY = "settings";
+export const SETTINGS_SCHEMA_VERSION = 1;
 
 export const defaultSettings = {
   strictMode: false,
@@ -18,15 +19,54 @@ export const defaultSettings = {
   showComments: false,
 };
 
-function mergeSettings(savedSettings) {
+const booleanSettingKeys = [
+  "strictMode",
+  "showFieldSummary",
+  "showGrid",
+  "snapToGrid",
+  "showDataTypes",
+  "autosave",
+  "showCardinality",
+  "showRelationshipLabels",
+  "showDebugCoordinates",
+  "showComments",
+];
+
+function sanitizeSettings(savedSettings) {
   if (!savedSettings || typeof savedSettings !== "object" || Array.isArray(savedSettings)) {
     return defaultSettings;
   }
 
-  return {
-    ...defaultSettings,
-    ...savedSettings,
-  };
+  const sanitized = { ...defaultSettings };
+
+  for (const key of booleanSettingKeys) {
+    if (typeof savedSettings[key] === "boolean") {
+      sanitized[key] = savedSettings[key];
+    }
+  }
+
+  if (queryConfig.theme.isValid(savedSettings.mode)) {
+    sanitized.mode = savedSettings.mode;
+  }
+
+  if (Number.isFinite(savedSettings.tableWidth) && savedSettings.tableWidth > 0) {
+    sanitized.tableWidth = savedSettings.tableWidth;
+  }
+
+  return sanitized;
+}
+
+function parseStoredSettings(savedSettings) {
+  if (
+    savedSettings?.schemaVersion === SETTINGS_SCHEMA_VERSION &&
+    savedSettings?.settings &&
+    typeof savedSettings.settings === "object" &&
+    !Array.isArray(savedSettings.settings)
+  ) {
+    return savedSettings.settings;
+  }
+
+  return savedSettings;
 }
 
 function applySearchParams(settings, searchParams) {
@@ -45,7 +85,7 @@ export function readSettings(searchParams) {
 
   if (savedSettings) {
     try {
-      settings = mergeSettings(JSON.parse(savedSettings));
+      settings = sanitizeSettings(parseStoredSettings(JSON.parse(savedSettings)));
     } catch (error) {
       recovered = true;
       localStorage.removeItem(SETTINGS_STORAGE_KEY);
@@ -61,7 +101,13 @@ export function readSettings(searchParams) {
 
 export function writeSettings(settings) {
   try {
-    localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    localStorage.setItem(
+      SETTINGS_STORAGE_KEY,
+      JSON.stringify({
+        schemaVersion: SETTINGS_SCHEMA_VERSION,
+        settings: sanitizeSettings(settings),
+      }),
+    );
   } catch (error) {
     console.warn("Failed to persist settings", error);
   }

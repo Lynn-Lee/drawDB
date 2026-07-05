@@ -32,8 +32,8 @@ async function expectNoSeriousAccessibilityViolations(page) {
 test.describe("accessibility smoke", () => {
   async function createBlankDiagram(page) {
     await page.goto("/editor");
-    await page.getByRole("button", { name: "Create blank diagram" }).click();
-    await expect(page.getByText("File").first()).toBeVisible();
+    await page.getByRole("button", { name: "创建空白图表" }).click();
+    await expect(page.getByText("文件").first()).toBeVisible();
   }
 
   test("landing page has no serious or critical axe violations", async ({
@@ -41,7 +41,7 @@ test.describe("accessibility smoke", () => {
   }) => {
     await page.goto("/");
     await expect(
-      page.getByRole("heading", { name: "Draw, Copy, and Paste" }),
+      page.getByRole("heading", { name: "绘制、复制、粘贴" }),
     ).toBeVisible();
 
     await expectNoSeriousAccessibilityViolations(page);
@@ -51,7 +51,7 @@ test.describe("accessibility smoke", () => {
     page,
   }) => {
     await page.goto("/templates");
-    await expect(page.getByText("Database schema templates")).toBeVisible();
+    await expect(page.getByText("数据库 schema 模板")).toBeVisible();
 
     await expectNoSeriousAccessibilityViolations(page);
   });
@@ -68,9 +68,9 @@ test.describe("accessibility smoke", () => {
     page,
   }) => {
     await page.goto("/editor");
-    await page.getByRole("button", { name: "Import SQL, DBML, or JSON" }).click();
+    await page.getByRole("button", { name: "导入 SQL、DBML 或 JSON" }).click();
     await expect(
-      page.getByRole("dialog", { name: "Import diagram" }),
+      page.getByRole("dialog", { name: "导入图表" }),
     ).toBeVisible();
 
     await expectNoSeriousAccessibilityViolations(page);
@@ -80,8 +80,8 @@ test.describe("accessibility smoke", () => {
     page,
   }) => {
     await createBlankDiagram(page);
-    await page.getByRole("button", { name: "Share" }).click();
-    await expect(page.getByRole("dialog", { name: "Share" })).toBeVisible();
+    await page.getByRole("button", { name: "分享" }).click();
+    await expect(page.getByRole("dialog", { name: "分享" })).toBeVisible();
 
     await expectNoSeriousAccessibilityViolations(page);
   });

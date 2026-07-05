@@ -425,7 +425,8 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: "en",
+    lng: "zh",
+    fallbackLng: "zh",
     supportedLngs: languages.map((language) => language.code),
     nonExplicitSupportedLngs: true,
     debug: false,

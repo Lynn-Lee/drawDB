@@ -59,13 +59,13 @@ const blockTypeToIcon = {
 };
 
 const blockTypeToBlockName = {
-  paragraph: "Paragraph",
-  h1: "Large Heading",
-  h2: "Small Heading",
-  ul: "Bulleted List",
-  ol: "Numbered List",
-  code: "Code Block",
-  quote: "Quote",
+  paragraph: "段落",
+  h1: "大标题",
+  h2: "小标题",
+  ul: "项目符号列表",
+  ol: "编号列表",
+  code: "代码块",
+  quote: "引用",
 };
 
 function Divider() {
@@ -325,50 +325,50 @@ function BlockOptionsDropdownList({ editor, blockType }) {
             onClick={formatParagraph}
             icon={<i className={`bi ${blockTypeToIcon.paragraph}`} />}
           >
-            Paragraph
+            段落
           </Dropdown.Item>
           <Dropdown.Item
             onClick={formatLargeHeading}
             icon={<i className={`bi ${blockTypeToIcon.h1}`} />}
           >
-            Large Heading
+            大标题
           </Dropdown.Item>
           <Dropdown.Item
             onClick={formatSmallHeading}
             icon={<i className={`bi ${blockTypeToIcon.h2}`} />}
           >
-            Small Heading
+            小标题
           </Dropdown.Item>
           <Dropdown.Item
             onClick={formatBulletList}
             icon={<i className={`bi ${blockTypeToIcon.ul}`} />}
           >
-            Bullet List
+            项目符号列表
           </Dropdown.Item>
           <Dropdown.Item
             onClick={formatNumberedList}
             icon={<i className={`bi ${blockTypeToIcon.ol}`} />}
           >
-            Numbered List
+            编号列表
           </Dropdown.Item>
           <Dropdown.Item
             onClick={formatQuote}
             icon={<i className={`bi ${blockTypeToIcon.quote}`} />}
           >
-            Quote
+            引用
           </Dropdown.Item>
           <Dropdown.Item
             onClick={formatCode}
             icon={<i className={`bi ${blockTypeToIcon.code}`} />}
           >
-            Code Block
+            代码块
           </Dropdown.Item>
         </Dropdown.Menu>
       }
     >
       <button
         className="flex mx-2 justify-center items-center"
-        aria-label="Formatting Options"
+        aria-label="格式选项"
       >
         <i className={`bi ${blockTypeToIcon[blockType]} me-3`} />
         <span className="me-3 text-sm">{blockTypeToBlockName[blockType]}</span>
@@ -501,7 +501,7 @@ export default function ToolbarPlugin() {
         disabled={!canUndo}
         onClick={() => editor.dispatchCommand(UNDO_COMMAND)}
         className="toolbar-item spaced"
-        aria-label="Undo"
+        aria-label="撤销"
       >
         <i
           className={`bi bi-arrow-counterclockwise ${
@@ -513,7 +513,7 @@ export default function ToolbarPlugin() {
         disabled={!canRedo}
         onClick={() => editor.dispatchCommand(REDO_COMMAND)}
         className="toolbar-item"
-        aria-label="Redo"
+        aria-label="重做"
       >
         <i className={`bi bi-arrow-clockwise ${canRedo ? "" : "opacity-30"}`} />
       </button>
@@ -535,7 +535,7 @@ export default function ToolbarPlugin() {
           <button
             onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")}
             className={"toolbar-item spaced " + (isBold ? "active" : "")}
-            aria-label="Format Bold"
+            aria-label="加粗"
           >
             <i className="bi bi-type-bold" />
           </button>
@@ -544,7 +544,7 @@ export default function ToolbarPlugin() {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")
             }
             className={"toolbar-item spaced " + (isItalic ? "active" : "")}
-            aria-label="Format Italics"
+            aria-label="斜体"
           >
             <i className="bi bi-type-italic" />
           </button>
@@ -553,7 +553,7 @@ export default function ToolbarPlugin() {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline")
             }
             className={"toolbar-item spaced " + (isUnderline ? "active" : "")}
-            aria-label="Format Underline"
+            aria-label="下划线"
           >
             <i className="bi bi-type-underline" />
           </button>
@@ -564,21 +564,21 @@ export default function ToolbarPlugin() {
             className={
               "toolbar-item spaced " + (isStrikethrough ? "active" : "")
             }
-            aria-label="Format Strikethrough"
+            aria-label="删除线"
           >
             <i className="bi bi-type-strikethrough" />
           </button>
           <button
             onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "code")}
             className={"toolbar-item spaced " + (isCode ? "active" : "")}
-            aria-label="Insert Code"
+            aria-label="插入代码"
           >
             <i className="bi bi-code-slash" />
           </button>
           <button
             onClick={insertLink}
             className={"toolbar-item spaced " + (isLink ? "active" : "")}
-            aria-label="Insert Link"
+            aria-label="插入链接"
           >
             <i className="bi bi-link" />
           </button>
@@ -593,7 +593,7 @@ export default function ToolbarPlugin() {
               editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left")
             }
             className="toolbar-item spaced"
-            aria-label="Left Align"
+            aria-label="左对齐"
           >
             <i className="bi bi-text-left" />
           </button>
@@ -602,7 +602,7 @@ export default function ToolbarPlugin() {
               editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center")
             }
             className="toolbar-item spaced"
-            aria-label="Center Align"
+            aria-label="居中对齐"
           >
             <i className="bi bi-text-center" />
           </button>
@@ -611,7 +611,7 @@ export default function ToolbarPlugin() {
               editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right");
             }}
             className="toolbar-item spaced"
-            aria-label="Right Align"
+            aria-label="右对齐"
           >
             <i className="bi bi-text-right" />
           </button>
@@ -620,7 +620,7 @@ export default function ToolbarPlugin() {
               editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "justify");
             }}
             className="toolbar-item"
-            aria-label="Justify Align"
+            aria-label="两端对齐"
           >
             <i className="bi bi-justify" />
           </button>

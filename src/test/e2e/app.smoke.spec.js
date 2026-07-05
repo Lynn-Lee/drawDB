@@ -5,9 +5,9 @@ test.describe("app smoke", () => {
     await page.goto("/");
 
     await expect(
-      page.getByRole("heading", { name: "Draw, Copy, and Paste" })
+      page.getByRole("heading", { name: "绘制、复制、粘贴" })
     ).toBeVisible();
-    await expect(page.getByRole("link", { name: "Editor" }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: "编辑器" }).first()).toBeVisible();
   });
 
   test("landing page fits a 390px mobile viewport", async ({ page }) => {
@@ -15,10 +15,10 @@ test.describe("app smoke", () => {
     await page.goto("/");
 
     await expect(
-      page.getByRole("heading", { name: "Draw, Copy, and Paste" }),
+      page.getByRole("heading", { name: "绘制、复制、粘贴" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("link", { name: "Try it for yourself" }),
+      page.getByRole("link", { name: "立即试用" }),
     ).toBeVisible();
 
     const layout = await page.evaluate(() => {
@@ -51,35 +51,35 @@ test.describe("app smoke", () => {
     await page.goto("/");
 
     await expect(
-      page.getByRole("heading", { name: "Draw, Copy, and Paste" }),
+      page.getByRole("heading", { name: "绘制、复制、粘贴" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("link", { name: "Try it for yourself" }),
+      page.getByRole("link", { name: "立即试用" }),
     ).toBeVisible();
     await expect(page.getByTestId("landing-social-widget")).toHaveCount(0);
 
-    await page.getByText("What the internet says about us").scrollIntoViewIfNeeded();
+    await page.getByText("社区如何评价我们").scrollIntoViewIfNeeded();
     await expect(page.getByTestId("landing-social-placeholder")).toBeVisible();
   });
 
   test("templates page renders the template library", async ({ page }) => {
     await page.goto("/templates");
 
-    await expect(page.getByText("Templates").first()).toBeVisible();
-    await expect(page.getByText("Database schema templates")).toBeVisible();
+    await expect(page.getByText("模板").first()).toBeVisible();
+    await expect(page.getByText("数据库 schema 模板")).toBeVisible();
   });
 
   test("editor route renders without requiring an account", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto("/editor");
 
-    await expect(page).toHaveTitle(/Editor \| SchemaCanvas/);
+    await expect(page).toHaveTitle(/编辑器 \| SchemaCanvas/);
     await expect(
-      page.getByRole("heading", { name: "Create a local diagram" }),
+      page.getByRole("heading", { name: "创建本地图表" }),
     ).toBeVisible();
-    await page.getByRole("button", { name: "Create blank diagram" }).click();
-    await expect(page.getByText("File").first()).toBeVisible();
-    await expect(page.getByText("Small screen editor mode")).toBeHidden();
+    await page.getByRole("button", { name: "创建空白图表" }).click();
+    await expect(page.getByText("文件").first()).toBeVisible();
+    await expect(page.getByText("小屏编辑模式")).toBeHidden();
   });
 
   test("cloud diagram load failure falls back to local editor mode", async ({
@@ -89,10 +89,10 @@ test.describe("app smoke", () => {
     await page.goto("/editor?cloudDiagramId=missing-cloud-diagram");
 
     await expect(
-      page.getByRole("heading", { name: "Create a local diagram" }),
+      page.getByRole("heading", { name: "创建本地图表" }),
     ).toBeVisible();
-    await page.getByRole("button", { name: "Create blank diagram" }).click();
-    await expect(page.getByText("File").first()).toBeVisible();
+    await page.getByRole("button", { name: "创建空白图表" }).click();
+    await expect(page.getByText("文件").first()).toBeVisible();
   });
 
   test("editor shows a mobile experience hint on small screens", async ({
@@ -100,11 +100,11 @@ test.describe("app smoke", () => {
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/editor");
-    await page.getByRole("button", { name: "Create blank diagram" }).click();
+    await page.getByRole("button", { name: "创建空白图表" }).click();
 
-    await expect(page.getByText("Small screen editor mode")).toBeVisible();
+    await expect(page.getByText("小屏编辑模式")).toBeVisible();
     await expect(
-      page.getByText("For full canvas editing, use a tablet or desktop."),
+      page.getByText("完整画布编辑建议使用平板或桌面设备。"),
     ).toBeVisible();
 
     const layout = await page.evaluate(() => ({
@@ -119,30 +119,30 @@ test.describe("app smoke", () => {
     page,
   }) => {
     await page.goto("/editor");
-    await page.getByRole("button", { name: "Create blank diagram" }).click();
+    await page.getByRole("button", { name: "创建空白图表" }).click();
 
-    await expect(page.getByRole("button", { name: "Zoom out" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Zoom in" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Undo" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Redo" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "缩小" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "放大" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "撤销" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "恢复" })).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Add table", exact: true }),
+      page.getByRole("button", { name: "添加表", exact: true }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Add area", exact: true }),
+      page.getByRole("button", { name: "添加区域", exact: true }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Add note", exact: true }),
+      page.getByRole("button", { name: "添加注释", exact: true }),
     ).toBeVisible();
-    await expect(page.getByRole("button", { name: "Save" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Versions" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Theme" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "保存" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "版本列表" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "主题" })).toBeVisible();
 
-    const shareButton = page.getByRole("button", { name: "Share" });
+    const shareButton = page.getByRole("button", { name: "分享" });
     await shareButton.click();
-    await expect(page.getByRole("dialog", { name: "Share" })).toBeVisible();
+    await expect(page.getByRole("dialog", { name: "分享" })).toBeVisible();
     await page.keyboard.press("Escape");
-    await expect(page.getByRole("dialog", { name: "Share" })).toBeHidden();
+    await expect(page.getByRole("dialog", { name: "分享" })).toBeHidden();
     await expect(shareButton).toBeFocused();
   });
 });

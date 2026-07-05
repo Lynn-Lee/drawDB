@@ -90,7 +90,7 @@ function DiagramTable({
       <thead>
         <tr>
           <th>{t("name")}</th>
-          {showOwner && <th>Owner</th>}
+          {showOwner && <th>{t("owner")}</th>}
           <th>{t("last_modified")}</th>
           <th>{t("size")}</th>
           <th>{t("type")}</th>
@@ -216,7 +216,7 @@ export default function Open({ selectedDiagramId, setSelectedDiagramId }) {
     <div className="max-h-[360px] overflow-auto space-y-3">
       {cloudEnabled && (
         <section>
-          <SectionHeader>Cloud diagrams</SectionHeader>
+          <SectionHeader>{t("cloud_diagrams")}</SectionHeader>
           {hasCloud ? (
             <DiagramTable
               items={cloud}
@@ -228,14 +228,14 @@ export default function Open({ selectedDiagramId, setSelectedDiagramId }) {
             />
           ) : (
             <div className="text-sm text-zinc-500 dark:text-zinc-400 px-1 py-2">
-              No cloud diagrams yet.
+              {t("cloud_diagrams_empty")}
             </div>
           )}
         </section>
       )}
       {hasLocal && (
         <section>
-          {cloudEnabled && <SectionHeader>Local (this browser)</SectionHeader>}
+          {cloudEnabled && <SectionHeader>{t("local_this_browser")}</SectionHeader>}
           <LocalDiagramList
             selectedDiagramId={selectedDiagramId}
             setSelectedDiagramId={setSelectedDiagramId}

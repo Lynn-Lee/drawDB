@@ -21,10 +21,10 @@ describe("ErrorBoundary", () => {
 
     expect(
       screen.getByRole("alert", {
-        name: /something went wrong/i,
+        name: "发生错误",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/reload this page/i)).toBeInTheDocument();
+    expect(screen.getByText(/重新加载此页面/)).toBeInTheDocument();
 
     consoleError.mockRestore();
   });

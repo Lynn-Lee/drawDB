@@ -23,7 +23,7 @@ export default function BrandLogo({
     <span className={`inline-flex items-center gap-3 ${className}`.trim()}>
       <img
         src={icon}
-        alt="SchemaCanvas logo"
+        alt="SchemaCanvas 标志"
         className={`${resolvedSize.icon} rounded-md`}
       />
       <span

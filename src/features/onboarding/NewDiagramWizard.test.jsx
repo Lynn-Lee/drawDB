@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 import { DB } from "../../data/constants";
+import "../../i18n/i18n";
 import NewDiagramWizard from "./NewDiagramWizard";
 
 vi.mock("@douyinfe/semi-ui", () => ({
@@ -29,19 +30,17 @@ describe("NewDiagramWizard", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "Create a local diagram" }),
+      screen.getByRole("heading", { name: "创建本地图表" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("默认只保存在当前浏览器中。")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "创建空白图表" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Saved by default in this browser only."),
+      screen.getByRole("button", { name: "从模板开始" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Create blank diagram" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Start from template" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Import SQL, DBML, or JSON" }),
+      screen.getByRole("button", { name: "导入 SQL、DBML 或 JSON" }),
     ).toBeInTheDocument();
   });
 
@@ -58,7 +57,7 @@ describe("NewDiagramWizard", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "PostgreSQL" }));
     await userEvent.click(
-      screen.getByRole("button", { name: "Create blank diagram" }),
+      screen.getByRole("button", { name: "创建空白图表" }),
     );
 
     expect(onCreateBlank).toHaveBeenCalledWith(DB.POSTGRES);
@@ -76,9 +75,9 @@ describe("NewDiagramWizard", () => {
       />,
     );
 
-    await userEvent.click(screen.getByRole("button", { name: "Start from template" }));
+    await userEvent.click(screen.getByRole("button", { name: "从模板开始" }));
     await userEvent.click(
-      screen.getByRole("button", { name: "Import SQL, DBML, or JSON" }),
+      screen.getByRole("button", { name: "导入 SQL、DBML 或 JSON" }),
     );
 
     expect(onOpenTemplates).toHaveBeenCalledTimes(1);

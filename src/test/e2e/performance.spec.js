@@ -12,7 +12,7 @@ test.describe("performance smoke", () => {
 
     await page.goto(`/editor/diagrams/${diagram.diagramId}`);
 
-    await expect(page.getByText("Tables (500)")).toBeVisible();
+    await expect(page.getByText("表 (500)")).toBeVisible();
     await expect(
       page.locator("#scroll_table_perf-500-table-001"),
     ).toBeVisible();

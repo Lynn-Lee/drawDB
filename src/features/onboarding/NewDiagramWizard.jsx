@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Tag } from "@douyinfe/semi-ui";
 
 import { DB } from "../../data/constants";
@@ -7,37 +8,37 @@ const DATABASE_OPTIONS = [
   {
     name: "Generic",
     label: DB.GENERIC,
-    description: "Portable diagram without dialect-specific constraints.",
+    descriptionKey: "new_diagram_database_generic_description",
   },
   {
     name: "MySQL",
     label: DB.MYSQL,
-    description: "Use MySQL-oriented types and export defaults.",
+    descriptionKey: "new_diagram_database_mysql_description",
   },
   {
     name: "PostgreSQL",
     label: DB.POSTGRES,
-    description: "Use PostgreSQL types, enums, and arrays.",
+    descriptionKey: "new_diagram_database_postgres_description",
   },
   {
     name: "SQLite",
     label: DB.SQLITE,
-    description: "Use SQLite-friendly schema defaults.",
+    descriptionKey: "new_diagram_database_sqlite_description",
   },
   {
     name: "MariaDB",
     label: DB.MARIADB,
-    description: "Use MariaDB-oriented types and export defaults.",
+    descriptionKey: "new_diagram_database_mariadb_description",
   },
   {
     name: "MSSQL",
     label: DB.MSSQL,
-    description: "Use SQL Server-oriented schema defaults.",
+    descriptionKey: "new_diagram_database_mssql_description",
   },
   {
     name: "Oracle SQL",
     label: DB.ORACLESQL,
-    description: "Use Oracle-oriented schema defaults.",
+    descriptionKey: "new_diagram_database_oracle_description",
     beta: true,
   },
 ];
@@ -48,6 +49,7 @@ export default function NewDiagramWizard({
   onOpenImport,
 }) {
   const [selectedDatabase, setSelectedDatabase] = useState(DB.GENERIC);
+  const { t } = useTranslation();
 
   return (
     <section
@@ -57,16 +59,16 @@ export default function NewDiagramWizard({
       <div className="mx-auto flex min-h-full max-w-5xl flex-col justify-center gap-6">
         <div className="max-w-2xl space-y-2">
           <p className="text-sm font-medium uppercase tracking-normal text-zinc-500 dark:text-zinc-400">
-            Local-first editor
+            {t("new_diagram_wizard_eyebrow")}
           </p>
           <h1
             id="new-diagram-wizard-title"
             className="text-3xl font-semibold tracking-normal"
           >
-            Create a local diagram
+            {t("new_diagram_wizard_title")}
           </h1>
           <p className="text-sm text-zinc-600 dark:text-zinc-300">
-            Saved by default in this browser only.
+            {t("new_diagram_wizard_description")}
           </p>
         </div>
 
@@ -95,7 +97,7 @@ export default function NewDiagramWizard({
                   )}
                 </div>
                 <p className="mt-2 text-xs leading-5 text-zinc-600 dark:text-zinc-300">
-                  {database.description}
+                  {t(database.descriptionKey)}
                 </p>
               </button>
             );
@@ -108,10 +110,10 @@ export default function NewDiagramWizard({
             type="primary"
             onClick={() => onCreateBlank(selectedDatabase)}
           >
-            Create blank diagram
+            {t("create_blank_diagram")}
           </Button>
-          <Button onClick={onOpenTemplates}>Start from template</Button>
-          <Button onClick={onOpenImport}>Import SQL, DBML, or JSON</Button>
+          <Button onClick={onOpenTemplates}>{t("start_from_template")}</Button>
+          <Button onClick={onOpenImport}>{t("import_sql_dbml_json")}</Button>
         </div>
       </div>
     </section>

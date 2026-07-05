@@ -321,6 +321,36 @@ const en = {
     cloud_diagrams_untitled: "Untitled cloud diagram",
     cloud_diagrams_viewer: "viewer",
     cloud_diagrams_open_cloud_diagram: "Open in editor",
+    owner: "Owner",
+    local_this_browser: "Local (this browser)",
+    navbar_features: "Features",
+    navbar_editor: "Editor",
+    jump_to_github: "Jump to GitHub",
+    open_navigation_menu: "Open navigation menu",
+    new_diagram_wizard_eyebrow: "Local-first editor",
+    new_diagram_wizard_title: "Create a local diagram",
+    new_diagram_wizard_description:
+      "Saved by default in this browser only.",
+    new_diagram_database_generic_description:
+      "Portable diagram without dialect-specific constraints.",
+    new_diagram_database_mysql_description:
+      "Use MySQL-oriented types and export defaults.",
+    new_diagram_database_postgres_description:
+      "Use PostgreSQL types, enums, and arrays.",
+    new_diagram_database_sqlite_description:
+      "Use SQLite-friendly schema defaults.",
+    new_diagram_database_mariadb_description:
+      "Use MariaDB-oriented types and export defaults.",
+    new_diagram_database_mssql_description:
+      "Use SQL Server-oriented schema defaults.",
+    new_diagram_database_oracle_description:
+      "Use Oracle-oriented schema defaults.",
+    create_blank_diagram: "Create blank diagram",
+    start_from_template: "Start from template",
+    import_sql_dbml_json: "Import SQL, DBML, or JSON",
+    small_screen_editor_mode: "Small screen editor mode",
+    small_screen_editor_description:
+      "For full canvas editing, use a tablet or desktop. Import, export, save, and open remain available from the top menu.",
     landing_document_title:
       "SchemaCanvas | Online database diagram editor and SQL generator",
     landing_hero_title: "Draw, Copy, and Paste",

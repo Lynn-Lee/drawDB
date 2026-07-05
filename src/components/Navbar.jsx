@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { SideSheet } from "@douyinfe/semi-ui";
 import { IconMenu } from "@douyinfe/semi-icons";
 import { socials } from "../data/socials";
@@ -7,6 +8,7 @@ import BrandLogo from "./BrandLogo";
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -24,24 +26,24 @@ export default function Navbar() {
                   .scrollIntoView({ behavior: "smooth" })
               }
             >
-              Features
+              {t("navbar_features")}
             </Link>
             <Link
               to="/editor"
               className="text-lg font-semibold text-zinc-800 hover:text-sky-800 transition-colors duration-300"
             >
-              Editor
+              {t("navbar_editor")}
             </Link>
             <Link
               to="/templates"
               className="text-lg font-semibold text-zinc-800 hover:text-sky-800 transition-colors duration-300"
             >
-              Templates
+              {t("templates")}
             </Link>
           </div>
           <div className="md:hidden block space-x-3 ms-12">
             <a
-              title="Jump to Github"
+              title={t("jump_to_github")}
               className="px-2 py-2 hover:opacity-60 transition-all duration-300 rounded-full text-2xl"
               href={socials.github}
               target="_blank"
@@ -52,7 +54,7 @@ export default function Navbar() {
           </div>
         </div>
         <button
-          aria-label="Open navigation menu"
+          aria-label={t("open_navigation_menu")}
           onClick={() => setOpenMenu((prev) => !prev)}
           className="hidden md:inline-block h-[24px]"
         >
@@ -77,21 +79,21 @@ export default function Navbar() {
             setOpenMenu(false);
           }}
         >
-          Features
+          {t("navbar_features")}
         </Link>
         <hr />
         <Link
           to="/editor"
           className="hover:bg-zinc-100 block p-3 text-base font-semibold"
         >
-          Editor
+          {t("navbar_editor")}
         </Link>
         <hr />
         <Link
           to="/templates"
           className="hover:bg-zinc-100 block p-3 text-base font-semibold"
         >
-          Templates
+          {t("templates")}
         </Link>
         <hr />
         <a

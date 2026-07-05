@@ -2015,7 +2015,7 @@ export default function ControlPanel({
                 }}
                 onClick={!layout.readOnly && (() => openModal(MODAL.RENAME))}
               >
-                <span>{(isTemplate ? "Templates" : "Diagrams")}</span>
+                <span>{isTemplate ? t("templates") : t("models")}</span>
                 <span className="select-none text-zinc-400 dark:text-zinc-500 mx-1">/</span>
                 <span>{title}</span>
                 {version && (

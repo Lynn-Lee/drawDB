@@ -21,16 +21,15 @@ export default class ErrorBoundary extends Component {
       return (
         <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-6 text-white">
           <section
-            aria-label="Something went wrong"
+            aria-label="发生错误"
             role="alert"
             className="max-w-md text-center"
           >
             <h1 className="mb-3 text-2xl font-semibold">
-              Something went wrong
+              发生错误
             </h1>
             <p className="text-sm text-zinc-300">
-              Reload this page to restore the editor. Local diagrams remain in
-              this browser unless you clear site data.
+              重新加载此页面可恢复编辑器。除非清除站点数据，本地图表会继续保留在当前浏览器中。
             </p>
           </section>
         </main>

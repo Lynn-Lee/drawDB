@@ -711,10 +711,10 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
   }, [saveState, layout, save]);
 
   useEffect(() => {
-    document.title = "Editor | SchemaCanvas";
+    document.title = `${t("navbar_editor")} | SchemaCanvas`;
 
     load();
-  }, [load]);
+  }, [load, t]);
 
   return (
     <div className="h-full flex flex-col overflow-hidden theme">
@@ -737,11 +737,10 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
             <IconAlertTriangle className="mt-0.5 shrink-0 text-amber-500" />
             <div className="min-w-0 space-y-1">
               <div className="text-sm font-semibold">
-                Small screen editor mode
+                {t("small_screen_editor_mode")}
               </div>
               <p className="text-xs leading-5">
-                For full canvas editing, use a tablet or desktop. Import,
-                export, save, and open remain available from the top menu.
+                {t("small_screen_editor_description")}
               </p>
             </div>
           </div>

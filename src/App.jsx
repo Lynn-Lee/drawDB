@@ -9,10 +9,11 @@ const BugReport = lazy(() => import("./pages/BugReport"));
 const Templates = lazy(() => import("./pages/Templates"));
 const CloudDiagrams = lazy(() => import("./pages/CloudDiagrams"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const routerBaseName = normalizeBaseName(import.meta.env.BASE_URL);
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={routerBaseName}>
       <SettingsContextProvider>
         <RestoreScroll />
         <ErrorBoundary>
@@ -32,6 +33,11 @@ export default function App() {
       </SettingsContextProvider>
     </BrowserRouter>
   );
+}
+
+function normalizeBaseName(baseUrl) {
+  if (!baseUrl || baseUrl === "/") return undefined;
+  return baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
 }
 
 function RouteLoading() {

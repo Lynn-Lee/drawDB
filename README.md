@@ -137,6 +137,23 @@ http://localhost:3000
 docker compose up
 ```
 
+## 子路径部署
+
+如果需要与其他服务共用同一个域名或 IP，可以通过 `VITE_BASE_PATH` 指定部署子路径。例如部署到 `/schemacanvas/`：
+
+```bash
+VITE_BASE_PATH=/schemacanvas/ npm run build
+```
+
+Nginx 可将构建产物放到对应目录，并为 SPA 路由增加回退：
+
+```nginx
+location /schemacanvas/ {
+  alias /var/www/schemacanvas/;
+  try_files $uri $uri/ /schemacanvas/index.html;
+}
+```
+
 ## 可选后端配置
 
 SchemaCanvas 不依赖后端即可使用本地编辑器。若需要启用分享、版本记录或云端图表能力，可以在环境变量中配置兼容后端地址：
